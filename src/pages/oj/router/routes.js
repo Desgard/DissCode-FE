@@ -22,10 +22,10 @@ import * as Setting from '@oj/views/setting'
 
 export default [
   {
-    name: 'home',
+    name: 'problem-list',
     path: '/',
-    meta: {title: 'Home'},
-    component: Home
+    meta: {title: 'Problem List'},
+    component: ProblemList
   },
   {
     name: 'logout',

@@ -33,12 +33,13 @@
         </ul>
       </div>
     </panel>
-
+    
   </div>
 </template>
 
 <script>
   import utils from '@/utils/utils'
+  // import { ShowCardView } from '../../components/showCard/showCardView.vue'
 
   export default {
     data () {

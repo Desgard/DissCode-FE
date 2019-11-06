@@ -1,6 +1,6 @@
 <template>
   <panel class="container">
-    <div slot="title">{title}</div>
+    <div slot="title">Test</div>
   </panel>
 </template>
 
@@ -9,7 +9,6 @@
 export default {
   name: 'ShowCardView',
   props: {
-    title: String
   }
 }
 </script>
