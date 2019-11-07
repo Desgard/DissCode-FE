@@ -84,7 +84,7 @@
   import time from '@/utils/time'
 
   export default {
-    name: 'ContestDetail',
+    name: 'ContestDetaiContestDetaill',
     components: {},
     data () {
       return {
