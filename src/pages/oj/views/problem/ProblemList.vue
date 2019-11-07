@@ -51,6 +51,12 @@
 
     <Col :span="5">
     <Panel :padding="10">
+      <div slot="title" class="taglist-title">微信公众号</div>
+
+    </Panel>
+
+
+    <Panel :padding="10">
       <div slot="title" class="taglist-title">Tags</div>
       <Button v-for="tag in tagList"
               :key="tag.name"
