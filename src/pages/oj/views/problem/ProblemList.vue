@@ -52,9 +52,8 @@
     <Col :span="5">
     <Panel :padding="10">
       <div slot="title" class="taglist-title">微信公众号</div>
-
+      <img src="../../../../assets/qrcode.png" width="290px"/>
     </Panel>
-
 
     <Panel :padding="10">
       <div slot="title" class="taglist-title">Tags</div>
@@ -140,6 +139,7 @@
           },
           {
             title: 'Level',
+            width: 120,
             render: (h, params) => {
               let t = params.row.difficulty
               let color = 'blue'
@@ -154,10 +154,12 @@
           },
           {
             title: 'Total',
+            width: 120,
             key: 'submission_number'
           },
           {
             title: 'AC Rate',
+            width: 150,
             render: (h, params) => {
               return h('span', this.getACRate(params.row.accepted_number, params.row.submission_number))
             }
