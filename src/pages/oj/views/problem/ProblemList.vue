@@ -1,5 +1,8 @@
 <template>
-  <Row type="flex" :gutter="18">
+  <Row
+    type="flex"
+    :gutter="18"
+  >
     <Col :span=19>
     <Panel shadow>
       <div slot="title">Problem List</div>
@@ -19,59 +22,94 @@
             </Dropdown>
           </li>
           <li>
-            <i-switch size="large" @on-change="handleTagsVisible">
+            <i-switch
+              size="large"
+              v-model="show_tag"
+              @on-change="handleTagsVisible"
+            >
               <span slot="open">Tags</span>
               <span slot="close">Tags</span>
             </i-switch>
           </li>
           <li>
-            <Input v-model="query.keyword"
-                   @on-enter="filterByKeyword"
-                   @on-click="filterByKeyword"
-                   placeholder="keyword"
-                   icon="ios-search-strong"/>
+            <Input
+              v-model="query.keyword"
+              @on-enter="filterByKeyword"
+              @on-click="filterByKeyword"
+              placeholder="keyword"
+              icon="ios-search-strong"
+            />
           </li>
           <li>
-            <Button type="info" @click="onReset">
+            <Button
+              type="info"
+              @click="onReset"
+            >
               <Icon type="refresh"></Icon>
               Reset
             </Button>
           </li>
         </ul>
       </div>
-      <Table style="width: 100%; font-size: 16px;"
-             :columns="problemTableColumns"
-             :data="problemList"
-             :loading="loadings.table"
-             disabled-hover></Table>
+      <Table
+        style="width: 100%; font-size: 16px;"
+        :columns="problemTableColumns"
+        :data="problemList"
+        :loading="loadings.table"
+        disabled-hover
+      ></Table>
     </Panel>
-    <Pagination :total="total" :page-size="limit" @on-change="pushRouter" :current.sync="query.page"></Pagination>
+    <Pagination
+      :total="total"
+      :page-size="limit"
+      @on-change="pushRouter"
+      :current.sync="query.page"
+    ></Pagination>
 
     </Col>
 
     <Col :span="5">
     <Panel :padding="10">
-      <div slot="title" class="taglist-title">微信公众号</div>
-      <img src="../../../../assets/qrcode.png" width="290px"/>
+      <div
+        slot="title"
+        class="taglist-title"
+      >微信公众号</div>
+      <img
+        src="../../../../assets/qrcode.png"
+        width="290px"
+      />
     </Panel>
 
     <Panel :padding="10">
-      <div slot="title" class="taglist-title">Tags</div>
-      <Button v-for="tag in tagList"
-              :key="tag.name"
-              @click="filterByTag(tag.name)"
-              type="ghost"
-              :disabled="query.tag === tag.name"
-              shape="circle"
-              class="tag-btn">{{tag.name}}
+      <div
+        slot="title"
+        class="taglist-title"
+      >Tags</div>
+      <Button
+        v-for="tag in tagList"
+        :key="tag.name"
+        @click="filterByTag(tag.name)"
+        type="ghost"
+        :disabled="query.tag === tag.name"
+        shape="circle"
+        class="tag-btn"
+      >{{tag.name}}
       </Button>
 
-      <Button long id="pick-one" @click="pickone">
+      <Button
+        long
+        id="pick-one"
+        @click="pickone"
+      >
         <Icon type="shuffle"></Icon>
         Pick one
       </Button>
     </Panel>
-    <Spin v-if="loadings.tag" fix size="large"></Spin>
+    <Spin
+      v-if="loadings.tag"
+      fix
+      size="large"
+    ></Spin>
     </Col>
   </Row>
 </template>
@@ -163,6 +201,21 @@
             render: (h, params) => {
               return h('span', this.getACRate(params.row.accepted_number, params.row.submission_number))
             }
+          },
+          {
+            title: 'Tags',
+            align: 'center',
+            render: (h, params) => {
+              let tags = []
+              params.row.tags.forEach(tag => {
+                tags.push(h('Tag', {}, tag))
+              })
+              return h('div', {
+                style: {
+                  margin: '8px 0'
+                }
+              }, tags)
+            }
           }
         ],
         problemList: [],
@@ -178,7 +231,8 @@
           difficulty: '',
           tag: '',
           page: 1
-        }
+        },
+        show_tag: true
       }
     },
     mounted () {
@@ -259,7 +313,8 @@
                   }
                 }, tags)
               }
-            })
+            }
+          )
         } else {
           this.problemTableColumns.splice(this.problemTableColumns.length - 1, 1)
         }
@@ -293,17 +348,17 @@
 </script>
 
 <style scoped lang="less">
-  .taglist-title {
-    margin-left: -10px;
-    margin-bottom: -10px;
-  }
+.taglist-title {
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
 
-  .tag-btn {
-    margin-right: 5px;
-    margin-bottom: 10px;
-  }
+.tag-btn {
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
 
-  #pick-one {
-    margin-top: 10px;
-  }
+#pick-one {
+  margin-top: 10px;
+}
 </style>
