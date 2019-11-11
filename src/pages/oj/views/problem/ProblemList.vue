@@ -80,7 +80,10 @@
       />
     </Panel>
 
-    <Panel :padding="10">
+    <Panel
+      :padding="10"
+      :marginTop="30"
+    >
       <div
         slot="title"
         class="taglist-title"

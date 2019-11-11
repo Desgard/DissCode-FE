@@ -1,36 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>OnlineJudge</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <meta name="renderer" content="webkit"/>
-  <link rel="shortcut icon" href="/public/website/favicon.ico">
+  <head>
+    <title>OnlineJudge</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <link rel="shortcut icon" href="/public/website/favicon.ico" />
 
-  <link href="/static/css/loader.css" rel="stylesheet">
-  <script>
-    // IE 10 and earlier
-    if (window.navigator.userAgent.indexOf('MSIE ') > 0 &&
-      window.confirm('Your browser is not supported, click \'OK\' to update')) {
-      window.location = 'http://outdatedbrowser.com'
-    }
-  </script>
-</head>
-<body>
-<div id="app-loader">
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square last"></div>
-  <div class="square clear"></div>
-  <div class="square"></div>
-  <div class="square last"></div>
-  <div class="square clear"></div>
-  <div class="square "></div>
-  <div class="square last"></div>
-</div>
+    <link href="/static/css/loader.css" rel="stylesheet" />
+    <script>
+      // IE 10 and earlier
+      if (
+        window.navigator.userAgent.indexOf('MSIE ') > 0 &&
+        window.confirm("Your browser is not supported, click 'OK' to update")
+      ) {
+        window.location = 'http://outdatedbrowser.com';
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app-loader">
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square last"></div>
+      <div class="square clear"></div>
+      <div class="square"></div>
+      <div class="square last"></div>
+      <div class="square clear"></div>
+      <div class="square "></div>
+      <div class="square last"></div>
+    </div>
 
-<div id="app"></div>
-<!-- built files will be auto injected -->
-</body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyAo2jbCTEGKdn5eO-zuuqKY9553z1ud_YU',
+        authDomain: 'disscode-6525d.firebaseapp.com',
+        databaseURL: 'https://disscode-6525d.firebaseio.com',
+        projectId: 'disscode-6525d',
+        storageBucket: 'disscode-6525d.appspot.com',
+        messagingSenderId: '603518129282',
+        appId: '1:603518129282:web:b331bc52c59ffdcd0b909b',
+        measurementId: 'G-PN9XZ2E9T7'
+      }
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig)
+firebase.analytics()
+    </script>
+  </body>
 </html>

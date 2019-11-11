@@ -1,15 +1,28 @@
 <template>
-  <Card :padding="padding" :shadow="shadow" :dis-hover="disHover" :bordered="bordered">
-    <div slot="title" class="panel-title">
-      <slot name="title"></slot>
-    </div>
-    <div slot="extra" class="panel-extra">
-      <slot name="extra"></slot>
-    </div>
-    <div class="panel-body">
-      <slot></slot>
-    </div>
-  </Card>
+  <div ref="container_ref">
+    <Card
+      :padding="padding"
+      :shadow="shadow"
+      :dis-hover="disHover"
+      :bordered="bordered"
+    >
+      <div
+        slot="title"
+        class="panel-title"
+      >
+        <slot name="title"></slot>
+      </div>
+      <div
+        slot="extra"
+        class="panel-extra"
+      >
+        <slot name="extra"></slot>
+      </div>
+      <div class="panel-body">
+        <slot></slot>
+      </div>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -26,6 +39,11 @@
         type: Number,
         default: 0
       },
+      marginTop: {
+        required: false,
+        type: Number,
+        default: 0
+      },
       disHover: {
         required: false,
         type: Boolean,
@@ -36,32 +54,39 @@
         type: Boolean,
         default: true
       }
+    },
+    mounted: function () {
+      this.$refs.container_ref.style.setProperty('--marginTop', this.marginTop + 'px')
     }
   }
 </script>
 
 <style lang="less">
-  @import (reference) '../../../styles/common.less';
+@import (reference) "../../../styles/common.less";
 
-  .panel-title {
-    .section-title;
-    padding: 5px 15px;
-  }
+.panel-container {
+  margin-top: var(--marginTop);
+}
 
-  .panel-extra {
+.panel-title {
+  .section-title;
+  padding: 5px 15px;
+}
+
+.panel-extra {
+  line-height: 40px;
+  .ivu-input-icon {
     line-height: 40px;
-    .ivu-input-icon {
-      line-height: 40px;
-    }
-    ul.filter {
-      > li {
-        display: inline-block;
-        padding: 0 10px;
-      }
+  }
+  ul.filter {
+    > li {
+      display: inline-block;
+      padding: 0 10px;
     }
   }
-  .panel-body {
-    word-break: break-all;
-    word-wrap: break-word;
-  }
+}
+.panel-body {
+  word-break: break-all;
+  word-wrap: break-word;
+}
 </style>
