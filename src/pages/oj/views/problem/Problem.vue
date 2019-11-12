@@ -2,26 +2,47 @@
   <div class="flex-container">
     <div id="problem-main">
       <!--problem main-->
-      <Panel :padding="40" shadow>
+      <Panel
+        :padding="40"
+        shadow
+      >
         <div slot="title">{{problem.title}}</div>
-        <div id="problem-content" class="markdown-body" v-katex>
+        <div
+          id="problem-content"
+          class="markdown-body"
+          v-katex
+        >
           <p class="title">{{$t('m.Description')}}</p>
-          <p class="content" v-html=problem.description></p>
+          <p
+            class="content"
+            v-html=problem.description
+          ></p>
           <!-- {{$t('m.music')}} -->
           <p class="title">{{$t('m.Input')}} <span v-if="problem.io_mode.io_mode=='File IO'">({{$t('m.FromFile')}}: {{ problem.io_mode.input }})</span></p>
-          <p class="content" v-html=problem.input_description></p>
+          <p
+            class="content"
+            v-html=problem.input_description
+          ></p>
 
           <p class="title">{{$t('m.Output')}} <span v-if="problem.io_mode.io_mode=='File IO'">({{$t('m.ToFile')}}: {{ problem.io_mode.output }})</span></p>
-          <p class="content" v-html=problem.output_description></p>
+          <p
+            class="content"
+            v-html=problem.output_description
+          ></p>
 
-          <div v-for="(sample, index) of problem.samples" :key="index">
+          <div
+            v-for="(sample, index) of problem.samples"
+            :key="index"
+          >
             <div class="flex-container sample">
               <div class="sample-input">
                 <p class="title">{{$t('m.Sample_Input')}} {{index + 1}}
-                  <a class="copy"
-                     v-clipboard:copy="sample.input"
-                     v-clipboard:success="onCopy"
-                     v-clipboard:error="onCopyError">
+                  <a
+                    class="copy"
+                    v-clipboard:copy="sample.input"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onCopyError"
+                  >
                     <Icon type="clipboard"></Icon>
                   </a>
                 </p>
@@ -37,7 +58,10 @@
           <div v-if="problem.hint">
             <p class="title">{{$t('m.Hint')}}</p>
             <Card dis-hover>
-              <div class="content" v-html=problem.hint></div>
+              <div
+                class="content"
+                v-html=problem.hint
+              ></div>
             </Card>
           </div>
 
@@ -49,56 +73,100 @@
         </div>
       </Panel>
       <!--problem main end-->
-      <Card :padding="20" id="submit-code" dis-hover>
-        <CodeMirror :value.sync="code"
-                    :languages="problem.languages"
-                    :language="language"
-                    :theme="theme"
-                    @resetCode="onResetToTemplate"
-                    @changeTheme="onChangeTheme"
-                    @changeLang="onChangeLang"></CodeMirror>
-        <Row type="flex" justify="space-between">
+      <Card
+        :padding="20"
+        id="submit-code"
+        dis-hover
+      >
+        <CodeMirror
+          :value.sync="code"
+          :languages="problem.languages"
+          :language="language"
+          :theme="theme"
+          @resetCode="onResetToTemplate"
+          @changeTheme="onChangeTheme"
+          @changeLang="onChangeLang"
+        ></CodeMirror>
+        <Row
+          type="flex"
+          justify="space-between"
+        >
           <Col :span="10">
-            <div class="status" v-if="statusVisible">
-              <template v-if="!this.contestID || (this.contestID && OIContestRealTimePermission)">
-                <span>{{$t('m.Status')}}</span>
-                <Tag type="dot" :color="submissionStatus.color" @click.native="handleRoute('/status/'+submissionId)">
-                  {{submissionStatus.text}}
-                </Tag>
-              </template>
-              <template v-else-if="this.contestID && !OIContestRealTimePermission">
-                <Alert type="success" show-icon>Submitted successfully</Alert>
-              </template>
-            </div>
-            <div v-else-if="problem.my_status === 0">
-              <Alert type="success" show-icon>You have solved the problem</Alert>
-            </div>
-            <div v-else-if="this.contestID && !OIContestRealTimePermission && submissionExists">
-              <Alert type="success" show-icon>You have submitted a solution.</Alert>
-            </div>
-            <div v-if="contestEnded">
-              <Alert type="warning" show-icon>Contest has ended</Alert>
-            </div>
+          <div
+            class="status"
+            v-if="statusVisible"
+          >
+            <template v-if="!this.contestID || (this.contestID && OIContestRealTimePermission)">
+              <span>{{$t('m.Status')}}</span>
+              <Tag
+                type="dot"
+                :color="submissionStatus.color"
+                @click.native="handleRoute('/status/'+submissionId)"
+              >
+                {{submissionStatus.text}}
+              </Tag>
+            </template>
+            <template v-else-if="this.contestID && !OIContestRealTimePermission">
+              <Alert
+                type="success"
+                show-icon
+              >Submitted successfully</Alert>
+            </template>
+          </div>
+          <div v-else-if="problem.my_status === 0">
+            <Alert
+              type="success"
+              show-icon
+            >You have solved the problem</Alert>
+          </div>
+          <div v-else-if="this.contestID && !OIContestRealTimePermission && submissionExists">
+            <Alert
+              type="success"
+              show-icon
+            >You have submitted a solution.</Alert>
+          </div>
+          <div v-if="contestEnded">
+            <Alert
+              type="warning"
+              show-icon
+            >Contest has ended</Alert>
+          </div>
           </Col>
 
           <Col :span="12">
-            <template v-if="captchaRequired">
-              <div class="captcha-container">
-                <Tooltip v-if="captchaRequired" content="Click to refresh" placement="top">
-                  <img :src="captchaSrc" @click="getCaptchaSrc"/>
-                </Tooltip>
-                <Input v-model="captchaCode" class="captcha-code"/>
-              </div>
-            </template>
-            <Button type="warning" icon="edit" :loading="submitting" @click="submitCode"
-                    :disabled="problemSubmitDisabled || submitted"
-                    class="fl-right">
-              <span v-if="submitting">Submitting</span>
-              <span v-else>Submit</span>
-            </Button>
+          <template v-if="captchaRequired">
+            <div class="captcha-container">
+              <Tooltip
+                v-if="captchaRequired"
+                content="Click to refresh"
+                placement="top"
+              >
+                <img
+                  :src="captchaSrc"
+                  @click="getCaptchaSrc"
+                />
+              </Tooltip>
+              <Input
+                v-model="captchaCode"
+                class="captcha-code"
+              />
+            </div>
+          </template>
+          <Button
+            type="warning"
+            icon="edit"
+            :loading="submitting"
+            @click="submitCode"
+            :disabled="problemSubmitDisabled || submitted"
+            class="fl-right"
+          >
+            <span v-if="submitting">Submitting</span>
+            <span v-else>Submit</span>
+          </Button>
           </Col>
         </Row>
       </Card>
+      <div id="gitalk-container"></div>
     </div>
 
     <div id="right-column">
@@ -115,14 +183,19 @@
           </VerticalMenu-item>
         </template>
 
-        <VerticalMenu-item v-if="!this.contestID || OIContestRealTimePermission" :route="submissionRoute">
+        <VerticalMenu-item
+          v-if="!this.contestID || OIContestRealTimePermission"
+          :route="submissionRoute"
+        >
           <Icon type="navicon-round"></Icon>
           Submissions
         </VerticalMenu-item>
 
         <template v-if="this.contestID">
-          <VerticalMenu-item v-if="!this.contestID || OIContestRealTimePermission"
-                             :route="{name: 'contest-rank', params: {contestID: contestID}}">
+          <VerticalMenu-item
+            v-if="!this.contestID || OIContestRealTimePermission"
+            :route="{name: 'contest-rank', params: {contestID: contestID}}"
+          >
             <Icon type="stats-bars"></Icon>
             Rankings
           </VerticalMenu-item>
@@ -134,19 +207,26 @@
       </VerticalMenu>
 
       <Card id="info">
-        <div slot="title" class="header">
+        <div
+          slot="title"
+          class="header"
+        >
           <Icon type="information-circled"></Icon>
           <span class="card-title">{{$t('m.Information')}}</span>
         </div>
         <ul>
-          <li><p>ID</p>
-            <p>{{problem._id}}</p></li>
+          <li>
+            <p>ID</p>
+            <p>{{problem._id}}</p>
+          </li>
           <li>
             <p>{{$t('m.Time_Limit')}}</p>
-            <p>{{problem.time_limit}}MS</p></li>
+            <p>{{problem.time_limit}}MS</p>
+          </li>
           <li>
             <p>{{$t('m.Memory_Limit')}}</p>
-            <p>{{problem.memory_limit}}MB</p></li>
+            <p>{{problem.memory_limit}}MB</p>
+          </li>
           <li>
           <li>
             <p>{{$t('m.IOMode')}}</p>
@@ -154,10 +234,12 @@
           </li>
           <li>
             <p>{{$t('m.Created')}}</p>
-            <p>{{problem.created_by.username}}</p></li>
+            <p>{{problem.created_by.username}}</p>
+          </li>
           <li v-if="problem.difficulty">
             <p>{{$t('m.Level')}}</p>
-            <p>{{problem.difficulty}}</p></li>
+            <p>{{problem.difficulty}}</p>
+          </li>
           <li v-if="problem.total_score">
             <p>{{$t('m.Score')}}</p>
             <p>{{problem.total_score}}</p>
@@ -165,10 +247,16 @@
           <li>
             <p>{{$t('m.Tags')}}</p>
             <p>
-              <Poptip trigger="hover" placement="left-end">
+              <Poptip
+                trigger="hover"
+                placement="left-end"
+              >
                 <a>Show</a>
                 <div slot="content">
-                  <Tag v-for="tag in problem.tags" :key="tag">{{tag}}</Tag>
+                  <Tag
+                    v-for="tag in problem.tags"
+                    :key="tag"
+                  >{{tag}}</Tag>
                 </div>
               </Poptip>
             </p>
@@ -176,11 +264,20 @@
         </ul>
       </Card>
 
-      <Card id="pieChart" :padding="0" v-if="!this.contestID || OIContestRealTimePermission">
+      <Card
+        id="pieChart"
+        :padding="0"
+        v-if="!this.contestID || OIContestRealTimePermission"
+      >
         <div slot="title">
           <Icon type="ios-analytics"></Icon>
           <span class="card-title">Statistic</span>
-          <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">Details</Button>
+          <Button
+            type="ghost"
+            size="small"
+            id="detail"
+            @click="graphVisible = !graphVisible"
+          >Details</Button>
         </div>
         <div class="echarts">
           <ECharts :options="pie"></ECharts>
@@ -190,10 +287,16 @@
 
     <Modal v-model="graphVisible">
       <div id="pieChart-detail">
-        <ECharts :options="largePie" :initOptions="largePieInitOpts"></ECharts>
+        <ECharts
+          :options="largePie"
+          :initOptions="largePieInitOpts"
+        ></ECharts>
       </div>
       <div slot="footer">
-        <Button type="ghost" @click="graphVisible=false">Close</Button>
+        <Button
+          type="ghost"
+          @click="graphVisible=false"
+        >Close</Button>
       </div>
     </Modal>
   </div>
@@ -208,6 +311,10 @@
   import {JUDGE_STATUS, CONTEST_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
   import {pie, largePie} from './chartData'
+
+  // Gitalk
+  import Gitalk from 'gitalk'
+  import 'gitalk/dist/gitalk.css'
 
   // 只显示这些状态的图形占用
   const filtedStatus = ['-1', '-2', '0', '1', '2', '3', '4', '8']
@@ -274,6 +381,17 @@
     mounted () {
       this.$store.commit(types.CHANGE_CONTEST_ITEM_VISIBLE, {menu: false})
       this.init()
+
+      const gitalk = new Gitalk({
+        clientID: 'e55200ab4acd10de6e31',
+        clientSecret: '2c7234baa573a615cab13d68ed452d0a8e4dedd7',
+        repo: 'DissCode-docs',
+        owner: 'Desgard',
+        admin: ['Desgard'],
+        id: this.$route.path,
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+      gitalk.render('gitalk-container')
     },
     methods: {
       ...mapActions(['changeDomTitle']),
@@ -508,116 +626,117 @@
 </script>
 
 <style lang="less" scoped>
-  .card-title {
-    margin-left: 8px;
-  }
+.card-title {
+  margin-left: 8px;
+}
 
-  .flex-container {
-    #problem-main {
-      flex: auto;
-      margin-right: 18px;
-    }
-    #right-column {
-      flex: none;
-      width: 220px;
+.flex-container {
+  #problem-main {
+    flex: auto;
+    margin-right: 18px;
+  }
+  #right-column {
+    flex: none;
+    width: 220px;
+  }
+}
+
+#problem-content {
+  margin-top: -50px;
+  .title {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 25px 0 8px 0;
+    color: #3091f2;
+    .copy {
+      padding-left: 8px;
     }
   }
+  p.content {
+    margin-left: 25px;
+    margin-right: 20px;
+    font-size: 15px;
+  }
+  .sample {
+    align-items: stretch;
+    &-input,
+    &-output {
+      width: 50%;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      margin-right: 5%;
+    }
+    pre {
+      flex: 1 1 auto;
+      align-self: stretch;
+      border-style: solid;
+      background: transparent;
+    }
+  }
+}
 
-  #problem-content {
-    margin-top: -50px;
-    .title {
-      font-size: 20px;
-      font-weight: 400;
-      margin: 25px 0 8px 0;
-      color: #3091f2;
-      .copy {
-        padding-left: 8px;
+#submit-code {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  .status {
+    float: left;
+    span {
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+  }
+  .captcha-container {
+    display: inline-block;
+    .captcha-code {
+      width: auto;
+      margin-top: -20px;
+      margin-left: 20px;
+    }
+  }
+}
+
+#info {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  ul {
+    list-style-type: none;
+    li {
+      border-bottom: 1px dotted #e9eaec;
+      margin-bottom: 10px;
+      p {
+        display: inline-block;
+      }
+      p:first-child {
+        width: 90px;
+      }
+      p:last-child {
+        float: right;
       }
     }
-    p.content {
-      margin-left: 25px;
-      margin-right: 20px;
-      font-size: 15px
-    }
-    .sample {
-      align-items: stretch;
-      &-input, &-output {
-        width: 50%;
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: column;
-        margin-right: 5%;
-      }
-      pre {
-        flex: 1 1 auto;
-        align-self: stretch;
-        border-style: solid;
-        background: transparent;
-      }
-    }
   }
+}
 
-  #submit-code {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    .status {
-      float: left;
-      span {
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-    }
-    .captcha-container {
-      display: inline-block;
-      .captcha-code {
-        width: auto;
-        margin-top: -20px;
-        margin-left: 20px;
-      }
-    }
-  }
+.fl-right {
+  float: right;
+}
 
-  #info {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    ul {
-      list-style-type: none;
-      li {
-        border-bottom: 1px dotted #e9eaec;
-        margin-bottom: 10px;
-        p {
-          display: inline-block;
-        }
-        p:first-child {
-          width: 90px;
-        }
-        p:last-child {
-          float: right;
-        }
-      }
-    }
+#pieChart {
+  .echarts {
+    height: 250px;
+    width: 210px;
   }
+  #detail {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+}
 
-  .fl-right {
-    float: right;
-  }
-
-  #pieChart {
-    .echarts {
-      height: 250px;
-      width: 210px;
-    }
-    #detail {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-    }
-  }
-
-  #pieChart-detail {
-    margin-top: 20px;
-    width: 500px;
-    height: 480px;
-  }
+#pieChart-detail {
+  margin-top: 20px;
+  width: 500px;
+  height: 480px;
+}
 </style>
 
