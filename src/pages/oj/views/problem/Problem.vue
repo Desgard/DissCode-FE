@@ -378,10 +378,12 @@
         next()
       }
     },
+    created () {
+  
+    },
     mounted () {
       this.$store.commit(types.CHANGE_CONTEST_ITEM_VISIBLE, {menu: false})
-      this.init()
-
+      // https://github.com/gitalk/gitalk/issues/258
       const gitalk = new Gitalk({
         clientID: 'e55200ab4acd10de6e31',
         clientSecret: '2c7234baa573a615cab13d68ed452d0a8e4dedd7',
@@ -392,6 +394,7 @@
         distractionFreeMode: false  // Facebook-like distraction free mode
       })
       gitalk.render('gitalk-container')
+      this.init()
     },
     methods: {
       ...mapActions(['changeDomTitle']),

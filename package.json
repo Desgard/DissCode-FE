@@ -9,9 +9,11 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "build:dll": "webpack --config=build/webpack.dll.conf.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "q": "bash start_dev.sh"
   },
   "dependencies": {
+    "@vue/cli": "^4.0.5",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "browser-detect": "^0.2.27",
